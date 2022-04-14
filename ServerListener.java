@@ -10,6 +10,7 @@ public class ServerListener implements Runnable{
     String messageToSend;
     BlockingQueue<QueueMessage> messageQueue;
     String id;
+
     public ServerListener(Socket connectionSocket, String messageToSend, BlockingQueue<QueueMessage> messageQueue, int i) {
         this.connectionSocket = connectionSocket;
         this.messageToSend = messageToSend;

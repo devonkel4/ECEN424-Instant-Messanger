@@ -8,8 +8,7 @@ public class ServerBroadcaster implements Runnable{
     LinkedList<Socket> sockets;
     public ServerBroadcaster(BlockingQueue<QueueMessage> queue) {
         this.queue = queue;
-        sockets = new LinkedList<Socket>();
-
+        sockets = new LinkedList<>();
     }
 
     public void run() {
@@ -22,7 +21,6 @@ public class ServerBroadcaster implements Runnable{
                         for (Socket socket : sockets) {
                             if (currentMessage.socket != socket) {
                                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
                                 out.println(currentMessage.id + ": " + currentMessage.content);
                             }
                         }
@@ -46,6 +44,9 @@ public class ServerBroadcaster implements Runnable{
                          System.exit(0);
                      }
                  }
+            } catch (SocketException se) {
+                se.printStackTrace();
+                System.err.println(se.getClass().getName()+": "+se.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName()+": "+e.getMessage());
