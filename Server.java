@@ -1,5 +1,9 @@
 import java.io.PrintWriter;
 import java.net.*;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
     public static int isValidPort(String input) {
@@ -26,6 +30,7 @@ public class Server {
     public static void main(String [] args) {
         int serverPort = isValidPort(args[0]);
         int maxClients = isNumeric(args[1]);
+        BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingDeque<>();
         String messageToSend = args[2];
 
         if (serverPort == -1) {
@@ -51,7 +56,8 @@ public class Server {
         }
 
         Thread [] t = new Thread[maxClients];
-
+        Thread t2 = new Thread(new ServerBroadcaster(messageQueue));
+        t2.start();
         while (true) {
             try {
                 Socket connectionSocket = serverSocket.accept();
@@ -61,7 +67,7 @@ public class Server {
                 for (int i = 0; i < maxClients; i++) {
                     // if thread doesn't exist, or if thread exists and has finished running
                     if ( (t[i] == null) || (t[i] != null && !t[i].isAlive()) ) {
-                        t[i] = new Thread(new ServerThread(connectionSocket, messageToSend));
+                        t[i] = new Thread(new ServerListener(connectionSocket, messageToSend, messageQueue, i));
                         t[i].start();
                         atMaxConnections = false;
                         break;

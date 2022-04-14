@@ -70,9 +70,10 @@ public class Client {
             System.out.println(serverMessage);
 
             if (!serverMessage.equals("Connection refused.")) {
+                Thread t = new Thread(new ClientListener(clientSocket));
+                t.start();
                 // get user input and send input to server
                 while (true) {
-                    System.out.print("> ");
                     String userInput = scan.nextLine();
                     out.println(userInput);
 
