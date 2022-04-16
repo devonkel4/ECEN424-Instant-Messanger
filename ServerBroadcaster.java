@@ -11,6 +11,18 @@ public class ServerBroadcaster implements Runnable{
         sockets = new LinkedList<>();
     }
 
+    public void sendMessage(String input) {
+        try {
+            for (Socket socket : sockets) {
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                out.println(input);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+        }
+    }
+
     public void run() {
         while (true) {
             try {
@@ -18,12 +30,7 @@ public class ServerBroadcaster implements Runnable{
                  switch(currentMessage.msgType) {
                      case MESSAGE -> {
                          // broadcast messages
-                        for (Socket socket : sockets) {
-                            if (currentMessage.socket != socket) {
-                                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                                out.println(currentMessage.id + ": " + currentMessage.content);
-                            }
-                        }
+                        sendMessage(currentMessage.id + ": " + currentMessage.content);
                      }
 
                      case CONNECT -> {
@@ -44,9 +51,6 @@ public class ServerBroadcaster implements Runnable{
                          System.exit(0);
                      }
                  }
-            } catch (SocketException se) {
-                se.printStackTrace();
-                System.err.println(se.getClass().getName()+": "+se.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName()+": "+e.getMessage());

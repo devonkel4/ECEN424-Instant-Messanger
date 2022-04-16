@@ -2,8 +2,6 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-
-
 public class Client {
     public static String isValidIpAddress(String input) {
         String [] splitInput = input.split("\\.");
@@ -62,34 +60,19 @@ public class Client {
 
         try {
             clientSocket = new Socket(hostName, portNumber);
+            ClientUserInterface GUI = new ClientUserInterface(clientSocket);
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            Scanner scan = new Scanner(System.in);
 
             String serverMessage = in.readLine();
-            System.out.println(serverMessage);
 
             if (!serverMessage.equals("Connection refused.")) {
-                Thread t = new Thread(new ClientListener(clientSocket));
+                Thread t = new Thread(new ClientListener(clientSocket, GUI));
                 t.start();
-                // get user input and send input to server
-                while (true) {
-                    String userInput = scan.nextLine();
-                    out.println(userInput);
-
-                    if (userInput.equals("\\disconnect")) {
-                        clientSocket.close();
-                        break;
-                    }
-                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
-            return;
         }
 
-        System.out.println("Client exiting...");
     }
 }
