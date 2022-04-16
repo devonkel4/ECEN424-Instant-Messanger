@@ -5,10 +5,12 @@ import java.io.*;
 
 public class ServerBroadcaster implements Runnable{
     BlockingQueue<QueueMessage> queue;
+    ServerUserInterface GUI;
     LinkedList<Socket> sockets;
-    public ServerBroadcaster(BlockingQueue<QueueMessage> queue) {
+    public ServerBroadcaster(BlockingQueue<QueueMessage> queue, ServerUserInterface GUI, LinkedList<Socket> sockets) {
         this.queue = queue;
-        sockets = new LinkedList<>();
+        this.GUI = GUI;
+        this.sockets = sockets;
     }
 
     public void sendMessage(String input) {
@@ -17,6 +19,7 @@ public class ServerBroadcaster implements Runnable{
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 out.println(input);
             }
+            GUI.chatLog.append(input + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());

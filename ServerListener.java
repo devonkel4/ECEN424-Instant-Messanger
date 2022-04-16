@@ -10,11 +10,13 @@ public class ServerListener implements Runnable{
     String messageToSend;
     BlockingQueue<QueueMessage> messageQueue;
     String id;
-
-    public ServerListener(Socket connectionSocket, String messageToSend, BlockingQueue<QueueMessage> messageQueue, int i) {
+    ServerUserInterface GUI;
+    public ServerListener(Socket connectionSocket, String messageToSend, BlockingQueue<QueueMessage> messageQueue, int i,
+                          ServerUserInterface GUI) {
         this.connectionSocket = connectionSocket;
         this.messageToSend = messageToSend;
         this.messageQueue = messageQueue;
+        this.GUI = GUI;
         QueueMessage connectMessage = new QueueMessage(MessageType.CONNECT, connectionSocket);
         messageQueue.add(connectMessage);
         id = i + "";

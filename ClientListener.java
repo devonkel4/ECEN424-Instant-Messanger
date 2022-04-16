@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.net.*;
 import java.io.*;
 
@@ -14,7 +15,13 @@ public class ClientListener implements Runnable{
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String serverInput;
             while((serverInput = in.readLine()) != null) {
-                GUI.chatLog.append(serverInput + "\n");
+                JScrollBar scrollBar = GUI.chatLogScroll.getVerticalScrollBar();
+                if (scrollBar.getValue() >= scrollBar.getMaximum()-500) {  // auto scroll past a certain point
+                    GUI.chatLog.append(serverInput + "\n");
+                    scrollBar.setValue(scrollBar.getMaximum());
+                } else {
+                    GUI.chatLog.append(serverInput + "\n");
+                }
             }
         } catch (SocketException se) {
             System.exit(0);

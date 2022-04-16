@@ -3,8 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.LinkedList;
 
-public class ClientUserInterface {
+public class ServerUserInterface {
     private JFrame f;
     private JPanel base;
     private JPanel upperPanel;
@@ -14,14 +15,14 @@ public class ClientUserInterface {
     public JTextField userInput;
     public JTextArea chatLog;
     public JTable activeUsers;
-    public JScrollPane chatLogScroll;
+    private JScrollPane chatLogScroll;
     private JScrollPane activeUsersScroll;
-    private Socket socket;
+    private LinkedList<Socket> sockets;
     PrintWriter out;
 
-    public ClientUserInterface(Socket socket) {
+    public ServerUserInterface(LinkedList<Socket> sockets) {
 
-        f = new JFrame("Client");
+        f = new JFrame("Server");
         base = new JPanel(new BorderLayout());
         upperPanel = new JPanel(new GridLayout());
         lowerPanel = new JPanel(new GridLayout());
@@ -38,12 +39,7 @@ public class ClientUserInterface {
         userInput.setFont(resizedFont);
         chatLog.setFont(resizedFont);
 
-        this.socket = socket;
-        try {
-            out = new PrintWriter(socket.getOutputStream(), true);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+        this.sockets = sockets;
 
         base.add(upperPanel);
         base.add(lowerPanel,BorderLayout.SOUTH);
@@ -78,7 +74,16 @@ public class ClientUserInterface {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 String input = userInput.getText();
                 if (!input.equals("")) {
-                    out.println(input);
+                    for (Socket socket : sockets) {
+                        try {
+                            out = new PrintWriter(socket.getOutputStream(), true);
+                        } catch (Exception err) {
+                            err.printStackTrace();
+                            System.err.println(err.getClass().getName()+": "+err.getMessage());
+                        }
+                        out.println("SERVER: " + input);
+                    }
+                    chatLog.append("SERVER: " + input + "\n");
                     userInput.setText("");
                 }
             }

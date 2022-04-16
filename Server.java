@@ -46,6 +46,8 @@ public class Server {
         }
 
         ServerSocket serverSocket;
+        LinkedList<Socket> sockets = new LinkedList<>();
+        ServerUserInterface GUI = new ServerUserInterface(sockets);
 
         try {
             serverSocket = new ServerSocket(serverPort);
@@ -56,7 +58,7 @@ public class Server {
         }
 
         Thread [] t = new Thread[maxClients];
-        Thread t2 = new Thread(new ServerBroadcaster(messageQueue));
+        Thread t2 = new Thread(new ServerBroadcaster(messageQueue, GUI, sockets));
         t2.start();
         while (true) {
             try {
@@ -67,7 +69,7 @@ public class Server {
                 for (int i = 0; i < maxClients; i++) {
                     // if thread doesn't exist, or if thread exists and has finished running
                     if ( (t[i] == null) || (t[i] != null && !t[i].isAlive()) ) {
-                        t[i] = new Thread(new ServerListener(connectionSocket, messageToSend, messageQueue, i));
+                        t[i] = new Thread(new ServerListener(connectionSocket, messageToSend, messageQueue, i, GUI));
                         t[i].start();
                         atMaxConnections = false;
                         break;
