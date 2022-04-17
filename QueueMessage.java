@@ -1,7 +1,7 @@
 import java.net.*;
 
 enum MessageType {
-    CONNECT, DISCONNECT, MESSAGE, FILE, EXIT
+    CONNECT, DISCONNECT, MESSAGE, FILE, EXIT, FUNCTION
 }
 
 public class QueueMessage {
@@ -18,6 +18,11 @@ public class QueueMessage {
     public QueueMessage(MessageType msgType, Socket socket, String content) {
         this.msgType = msgType;
         this.socket = socket;
+        this.content = content;
+    }
+
+    public QueueMessage(MessageType msgType, String content) {
+        this.msgType = msgType;
         this.content = content;
     }
 }

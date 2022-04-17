@@ -50,6 +50,9 @@ public class ServerBroadcaster implements Runnable{
                          // TODO: serve files
                      }
 
+                     case FUNCTION -> {
+                         sendMessage(currentMessage.content);
+                     }
                      case EXIT -> {
                          System.exit(0);
                      }

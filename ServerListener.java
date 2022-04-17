@@ -22,6 +22,17 @@ public class ServerListener implements Runnable{
         id = i + "";
     }
 
+    private void parseFunction(String function) {
+        String [] split = function.split(" ");
+        String functionType = split[0].substring(1);
+        if (functionType.equals("nick")) {
+            String functionAnnouncement = id + " has changed their name to " + split[1];
+            id = split[1];
+            QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+            messageQueue.add(functionMessage);
+        }
+    }
+
     public void run() {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
@@ -39,6 +50,7 @@ public class ServerListener implements Runnable{
 
             while ((clientInput = in.readLine()) != null) {
                 // terminate connection if "\\disconnect" is received
+                System.out.println(clientInput);
                 try {
                     if (clientInput.equals("\\disconnect")) {
                         System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);
@@ -46,6 +58,8 @@ public class ServerListener implements Runnable{
                         messageQueue.add(disconnectMessage);
                         connectionSocket.close();
                         break;
+                    } else if (clientInput.substring(0,1).equals("/")) {
+                        parseFunction(clientInput);
                     } else {  // otherwise print message
                         QueueMessage stringMessage = new QueueMessage(MessageType.MESSAGE, connectionSocket, clientInput);
                         stringMessage.id = id;
