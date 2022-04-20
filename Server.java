@@ -10,6 +10,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
 public class Server {
+
     public static int isValidPort(String input) {
         int portNum;
 
@@ -61,7 +62,7 @@ public class Server {
             return;
         }
 
-        String fName = Date.from(Instant.now()).toString() + ".txt";
+        String fName = Date.from(Instant.now()) + ".txt";
         File file = new File(fName);
         ServerListener.fileWriter = new FileWriter(fName);
 
