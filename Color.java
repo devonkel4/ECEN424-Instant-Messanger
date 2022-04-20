@@ -28,7 +28,14 @@ public enum Color {
     BG_BLUE("\u001B[44m"),
     BG_PURPLE("\u001B[45m"),
     BG_CYAN("\u001B[46m"),
-    BG_WHITE("\u001B[47m")
+    BG_WHITE("\u001B[47m"),
+    //Formatting
+    BOLD("\u001B[1m"),
+    ITALIC("\u001B[3m"),
+    UNDERLINE("\u001B[4m"),
+    STRIKE("\u001B[9m"),
+    REVERSE("\u001B[7m"),
+    FRAME("\u001B[51m")
     ;
     //valued enum bs
     private final String color;
