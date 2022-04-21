@@ -1,10 +1,15 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.*;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class Server {
+
     public static int isValidPort(String input) {
         int portNum;
 
@@ -26,7 +31,7 @@ public class Server {
         }
     }
 
-    public static void main(String [] args) {
+    public static void main(String [] args) throws IOException {
         int serverPort = isValidPort(args[0]);
         int maxClients = isNumeric(args[1]);
         BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingDeque<>();
@@ -55,6 +60,10 @@ public class Server {
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             return;
         }
+
+//        String fName = Date.from(Instant.now()) + ".txt";
+//        File file = new File(fName);
+//        ServerListener.fileWriter = new FileWriter(fName);
 
         Thread [] t = new Thread[maxClients];
         Thread t2 = new Thread(new ServerBroadcaster(messageQueue, GUI, sockets));
@@ -86,6 +95,7 @@ public class Server {
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName()+": "+e.getMessage());
+//                ServerListener.fileWriter.close();
                 return;
             }
         }
