@@ -3,7 +3,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.util.HashMap;
 
 public class User {
     private static ArrayList<User> userList;
@@ -50,6 +49,9 @@ public class User {
     }
     public String FormatMessage(String message){ //Returns Message with color settings applied
         return "<" + nameColor + username + Color.RESET + "> " + bgColor + textColor + message + Color.RESET;
+    }
+    public String getUsername(){
+        return username;
     }
 
 }

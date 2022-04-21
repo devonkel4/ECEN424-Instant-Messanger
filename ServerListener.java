@@ -12,7 +12,7 @@ public class ServerListener implements Runnable{
     BlockingQueue<QueueMessage> messageQueue;
     String id;
     ServerUserInterface GUI;
-    static FileWriter fileWriter;
+//    static FileWriter fileWriter;
     public ServerListener(Socket connectionSocket, String messageToSend, BlockingQueue<QueueMessage> messageQueue, int i,
                           ServerUserInterface GUI) {
         this.connectionSocket = connectionSocket;
@@ -67,7 +67,7 @@ public class ServerListener implements Runnable{
                         stringMessage.id = id;
                         messageQueue.add(stringMessage);
                         System.out.printf("%s:%s: %s\n", clientIp, clientPort, clientInput);
-                        fileWriter.write("<" + clientIp + ":" + clientPort + "> " + clientInput + '\n');
+//                        fileWriter.write("<" + clientIp + ":" + clientPort + "> " + clientInput + '\n');
 
                     }
                 } catch (SocketException se) {

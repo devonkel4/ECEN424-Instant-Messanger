@@ -62,9 +62,9 @@ public class Server {
             return;
         }
 
-        String fName = Date.from(Instant.now()) + ".txt";
-        File file = new File(fName);
-        ServerListener.fileWriter = new FileWriter(fName);
+//        String fName = Date.from(Instant.now()) + ".txt";
+//        File file = new File(fName);
+//        ServerListener.fileWriter = new FileWriter(fName);
 
         Thread [] t = new Thread[maxClients];
         Thread t2 = new Thread(new ServerBroadcaster(messageQueue, GUI, sockets));
@@ -96,7 +96,7 @@ public class Server {
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName()+": "+e.getMessage());
-                ServerListener.fileWriter.close();
+//                ServerListener.fileWriter.close();
                 return;
             }
         }
