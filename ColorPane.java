@@ -93,22 +93,32 @@ public class ColorPane extends JTextPane {
 
     public Color getANSIColor(String ANSIColor) {
         return switch (ANSIColor) {
-            case "\u001B[0;30m" -> D_Black;
-            case "\u001B[0;31m" -> D_Red;
-            case "\u001B[0;32m" -> D_Green;
-            case "\u001B[0;33m" -> D_Yellow;
-            case "\u001B[0;34m" -> D_Blue;
-            case "\u001B[0;35m" -> D_Magenta;
-            case "\u001B[0;36m" -> D_Cyan;
-            case "\u001B[0;37m" -> D_White;
-            case "\u001B[1;30m" -> B_Black;
-            case "\u001B[1;31m" -> B_Red;
-            case "\u001B[1;32m" -> B_Green;
-            case "\u001B[1;33m" -> B_Yellow;
-            case "\u001B[1;34m" -> B_Blue;
-            case "\u001B[1;35m" -> B_Magenta;
-            case "\u001B[1;36m" -> B_Cyan;
-            case "\u001B[1;37m" -> B_White;
+//            case "\u001B[0;30m" -> D_Black;
+//            case "\u001B[0;31m" -> D_Red;
+//            case "\u001B[0;32m" -> D_Green;
+//            case "\u001B[0;33m" -> D_Yellow;
+//            case "\u001B[0;34m" -> D_Blue;
+//            case "\u001B[0;35m" -> D_Magenta;
+//            case "\u001B[0;36m" -> D_Cyan;
+//            case "\u001B[0;37m" -> D_White;
+//            case "\u001B[1;30m" -> B_Black;
+//            case "\u001B[1;31m" -> B_Red;
+//            case "\u001B[1;32m" -> B_Green;
+//            case "\u001B[1;33m" -> B_Yellow;
+//            case "\u001B[1;34m" -> B_Blue;
+//            case "\u001B[1;35m" -> B_Magenta;
+//            case "\u001B[1;36m" -> B_Cyan;
+//            case "\u001B[1;37m" -> B_White;
+//            case "\u001B[0m" -> cReset;
+//            default -> B_White;
+            case "\u001B[30m" -> D_Black;
+            case "\u001B[31m" -> D_Red;
+            case "\u001B[32m" -> D_Green;
+            case "\u001B[33m" -> D_Yellow;
+            case "\u001B[34m" -> D_Blue;
+            case "\u001B[35m" -> D_Magenta;
+            case "\u001B[36m" -> D_Cyan;
+            case "\u001B[37m" -> D_White;
             case "\u001B[0m" -> cReset;
             default -> B_White;
         };

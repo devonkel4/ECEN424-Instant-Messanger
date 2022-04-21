@@ -13,7 +13,6 @@ public class ClientUserInterface {
     private JPanel lowerPanel;
     private JPanel logPanel;
     private JPanel activePanel;
-    public DefaultStyledDocument styledDocument;
     public JTextField userInput;
     public ColorPane chatLog;
     public JTable activeUsers;
@@ -30,7 +29,6 @@ public class ClientUserInterface {
         lowerPanel = new JPanel(new GridLayout());
         logPanel = new JPanel(new GridLayout());
         activePanel = new JPanel(new GridLayout());
-        styledDocument = new DefaultStyledDocument();
         userInput = new JTextField();
         chatLog = new ColorPane();
         activeUsers = new JTable();

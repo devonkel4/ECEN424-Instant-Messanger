@@ -19,7 +19,7 @@ public class ServerBroadcaster implements Runnable{
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 out.println(input);
             }
-            GUI.chatLog.append(input + "\n");
+            GUI.chatLog.appendANSI(input + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
@@ -33,7 +33,7 @@ public class ServerBroadcaster implements Runnable{
                  switch(currentMessage.msgType) {
                      case MESSAGE -> {
                          // broadcast messages
-                        sendMessage(currentMessage.id + ": " + currentMessage.content);
+                        sendMessage("\u001B[31m" + currentMessage.id + ": \u001B[30m" + currentMessage.content);
                      }
 
                      case CONNECT -> {

@@ -13,7 +13,7 @@ public class ServerUserInterface {
     private JPanel logPanel;
     private JPanel activePanel;
     public JTextField userInput;
-    public JTextArea chatLog;
+    public ColorPane chatLog;
     public JTable activeUsers;
     private JScrollPane chatLogScroll;
     private JScrollPane activeUsersScroll;
@@ -29,7 +29,7 @@ public class ServerUserInterface {
         logPanel = new JPanel(new GridLayout());
         activePanel = new JPanel(new GridLayout());
         userInput = new JTextField();
-        chatLog = new JTextArea();
+        chatLog = new ColorPane();
         activeUsers = new JTable();
         chatLogScroll = new JScrollPane(chatLog);
         activeUsersScroll = new JScrollPane(activeUsers);
@@ -83,7 +83,7 @@ public class ServerUserInterface {
                         }
                         out.println("SERVER: " + input);
                     }
-                    chatLog.append("SERVER: " + input + "\n");
+                    chatLog.appendANSI("SERVER: " + input + "\n");
                     userInput.setText("");
                 }
             }

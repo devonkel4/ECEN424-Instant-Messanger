@@ -49,7 +49,6 @@ public class ServerListener implements Runnable{
 
             while ((clientInput = in.readLine()) != null) {
                 // terminate connection if "\\disconnect" is received
-                System.out.println(clientInput);
                 try {
                     if (clientInput.equals("\\disconnect")) {
                         System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);

@@ -32,7 +32,7 @@ public class ClientListener implements Runnable{
                 JScrollBar scrollBar = GUI.chatLogScroll.getVerticalScrollBar();
                 Random rnd = new Random();
                 int rng = rnd.nextInt();
-                GUI.chatLog.appendANSI(serverInput);
+                GUI.chatLog.appendANSI(serverInput + "\n");
                 if (scrollBar.getValue() >= scrollBar.getMaximum()-500) {  // auto scroll past a certain point
                     scrollBar.setValue(scrollBar.getMaximum());
                 }
