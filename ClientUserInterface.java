@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
@@ -12,7 +14,7 @@ public class ClientUserInterface {
     private JPanel logPanel;
     private JPanel activePanel;
     public JTextField userInput;
-    public JTextArea chatLog;
+    public ColorPane chatLog;
     public JTable activeUsers;
     public JScrollPane chatLogScroll;
     private JScrollPane activeUsersScroll;
@@ -28,13 +30,13 @@ public class ClientUserInterface {
         logPanel = new JPanel(new GridLayout());
         activePanel = new JPanel(new GridLayout());
         userInput = new JTextField();
-        chatLog = new JTextArea();
+        chatLog = new ColorPane();
         activeUsers = new JTable();
         chatLogScroll = new JScrollPane(chatLog);
         activeUsersScroll = new JScrollPane(activeUsers);
 
         Font originalFont = userInput.getFont();
-        Font resizedFont = new Font(originalFont.getName(), originalFont.getStyle(), 16);
+        Font resizedFont = new Font("Courier New", originalFont.getStyle(), 16);
         userInput.setFont(resizedFont);
         chatLog.setFont(resizedFont);
 

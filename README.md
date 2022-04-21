@@ -4,5 +4,5 @@
 ### Compilation
 `javac *.java`
 ### Run
-`java Client [IP address] [Port]`  
-`java Server [Port] [Max clients] "[Initial message]"`
+`java Client.Client [IP address] [Port]`  
+`java Server.Server [Port] [Max clients] "[Initial message]"`

@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 public class ServerListener implements Runnable{
@@ -50,7 +49,6 @@ public class ServerListener implements Runnable{
 
             while ((clientInput = in.readLine()) != null) {
                 // terminate connection if "\\disconnect" is received
-                System.out.println(clientInput);
                 try {
                     if (clientInput.equals("\\disconnect")) {
                         System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);

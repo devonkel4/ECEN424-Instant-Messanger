@@ -3,7 +3,6 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.TimeUnit;
 
 public class Server {
     public static int isValidPort(String input) {
@@ -80,7 +79,7 @@ public class Server {
                 if (atMaxConnections) {
                     PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
                     out.println("Connection refused.");
-                    System.out.println("Server capacity is full. Connection refused.");
+                    System.out.println("Server.Server capacity is full. Connection refused.");
                     connectionSocket.close();
                 }
 
