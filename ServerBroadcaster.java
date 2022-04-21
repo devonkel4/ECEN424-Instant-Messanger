@@ -33,7 +33,7 @@ public class ServerBroadcaster implements Runnable{
                  switch(currentMessage.msgType) {
                      case MESSAGE -> {
                          // broadcast messages
-                        sendMessage(currentMessage.id + ": " + currentMessage.content + "\n");
+                        sendMessage(currentMessage.id + ": " + currentMessage.content);
                      }
 
                      case CONNECT -> {

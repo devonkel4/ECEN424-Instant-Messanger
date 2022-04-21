@@ -32,13 +32,7 @@ public class ClientListener implements Runnable{
                 JScrollBar scrollBar = GUI.chatLogScroll.getVerticalScrollBar();
                 Random rnd = new Random();
                 int rng = rnd.nextInt();
-                if (rng % 2 == 1) {
-//                    append(Color.getHSBColor( 0.000f, 1.000f, 0.502f ), serverInput);
-                    GUI.chatLog.append(Color.getHSBColor( 0.000f, 1.000f, 0.502f ), serverInput + "\n");
-                } else {
-//                    append(Color.getHSBColor( 0.667f, 1.000f, 0.502f ), serverInput);
-                    GUI.chatLog.append(Color.getHSBColor( 0.667f, 1.000f, 0.502f ), serverInput + "\n");
-                }
+                GUI.chatLog.appendANSI(serverInput);
                 if (scrollBar.getValue() >= scrollBar.getMaximum()-500) {  // auto scroll past a certain point
                     scrollBar.setValue(scrollBar.getMaximum());
                 }
