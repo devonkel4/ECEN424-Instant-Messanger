@@ -10,6 +10,7 @@ public class ServerBroadcaster implements Runnable{
     BlockingQueue<QueueMessage> queue;
     ServerUserInterface GUI;
     LinkedList<User> users;
+    int portNum = 12355;
     public ServerBroadcaster(BlockingQueue<QueueMessage> queue, ServerUserInterface GUI, LinkedList<User> users) {
         this.queue = queue;
         this.GUI = GUI;
@@ -60,14 +61,19 @@ public class ServerBroadcaster implements Runnable{
                      }
 
                      case FILE -> {
-                         // TODO: serve files
+                         // hardcoded port right now, make it be based off something else in the future
+                         // change port number so multiple files don't collide with each other
+                         portNum += 1;
+                        System.out.println("Server finished receiving, sending content to users");
+                        Thread sendFileHost = new Thread(new ServerFileHost(portNum, currentMessage.content));
+                        sendFileHost.start();
+                        sendMessage("/filereceive " + portNum + " " + currentMessage.content);
                      }
 
                      case FUNCTION -> {
                          String [] split = currentMessage.content.split(" ");
                          switch(split[0]) {
                              case "/refreshusers" -> {
-                                 // TODO: get users
                                  DefaultTableModel newTableModel = new DefaultTableModel();
                                  newTableModel.addColumn("Users");
                                  for (User user : users) {

@@ -1,9 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
@@ -12,7 +7,7 @@ import java.net.Socket;
 import java.time.Instant;
 
 public class ClientUserInterface {
-    private JFrame f;
+    public JFrame f;
     private JPanel base;
     private JPanel upperPanel;
     private JPanel lowerPanel;
@@ -139,6 +134,23 @@ public class ClientUserInterface {
                             userInput.setText("");
                         } catch (Exception ee) {
                             System.out.println(ee);
+                        }
+                    }
+                    // /filesend ./path/to/filename.txt
+                    case "/filesend" -> {
+                        if (split.length >= 2) {
+                            // set up sender server
+                            int portNum = socket.getPort() + 1;
+                            String filePath = split[1];
+                            Thread sendFile = new Thread(new ClientFileSender(portNum, filePath));
+                            sendFile.start();
+                            chatLog.appendANSI("Trying to send file...\n");
+
+                            // set up information for receiver
+                            String [] splitPath = split[1].split("/");
+                            String fileName = splitPath[splitPath.length-1];
+                            out.println("/filesend " + portNum + " " + fileName);
+                            userInput.setText("");
                         }
                     }
                     default -> {
