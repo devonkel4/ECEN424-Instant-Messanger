@@ -95,7 +95,8 @@ public class ClientUserInterface {
             out.println(userIn + " " + pwdIn);
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
+                //out.println("/refreshusers");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             out.println("/refreshusers");

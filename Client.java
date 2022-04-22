@@ -59,18 +59,29 @@ public class Client {
         Socket clientSocket;
 
         try {
+            PrintWriter output;
             clientSocket = new Socket(hostName, portNumber);
             ClientUserInterface GUI = new ClientUserInterface(clientSocket);
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            output = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            String username = JOptionPane.showInputDialog(null, "Enter User Name:");
+            output.println(username);
+            String password = JOptionPane.showInputDialog(null, "Enter Password");
+            output.println(password);
+            output.flush();
+
 
             String serverMessage = in.readLine();
+            System.out.println(serverMessage);
 
             if (!serverMessage.equals("Connection refused.")) {
                 Thread t = new Thread(new ClientListener(clientSocket, GUI));
                 t.start();
             }
-            else
+            else{
                 GUI.chatLog.appendANSI(Color.BLACK + serverMessage + "\n");
+                System.exit(1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());

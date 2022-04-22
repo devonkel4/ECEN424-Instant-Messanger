@@ -7,6 +7,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class Server {
 
+
     public static int isValidPort(String input) {
         int portNum;
 
@@ -26,6 +27,36 @@ public class Server {
         } catch (NumberFormatException e) {
             return -1;
         }
+    }
+
+    public static String logInfo(Socket c, LinkedList<User> users) throws Exception{
+        //open buffered reader for reading data from client
+        BufferedReader input;
+        PrintWriter output;
+        input = new BufferedReader(new InputStreamReader(c.getInputStream()));
+
+        String username = input.readLine();
+        //System.out.println("SERVER SIDE" + username);
+        String password = input.readLine();
+        //System.out.println("SERVER SIDE" + password);
+
+        //open printwriter for writing data to client
+        output = new PrintWriter(new OutputStreamWriter(c.getOutputStream()));
+        for (User user : users) {
+            if (user.getUsername() == username+""){
+                return username;
+            }
+            if (user.verifyPW(password)){
+                return username;
+            }
+        }
+        return username + " " + password;
+      //  if(username.equals(c.getUsername()) &&password.equals(c.getPassword())){
+        //    output.println("Welcome, " + username);
+        //}else{
+          //  output.println("Login Failed");
+        //}
+
     }
 
     public static void main(String [] args) {
@@ -117,9 +148,32 @@ public class Server {
                                 }
                             }
                         }
+// <<<<<<< Login
                         //User user = new User(i + "", i + "");
                         currUser.setSocket(connectionSocket);
                         t[i] = new Thread(new ServerListener(currUser, "OK", messageQueue, i, GUI));
+// =======
+//                         String name = "";
+//                         try {
+//                              name = logInfo(connectionSocket, users);
+//                         } catch (Exception e) {
+//                             // TODO Auto-generated catch block
+//                             e.printStackTrace();
+//                         }
+//                         String [] split = name.split(" ");
+//                         if (split.length < 2){
+//                             PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
+//                             out.println("Connection refused.");
+//                             System.out.println("Server.Username or password already exist");
+//                             connectionSocket.close();
+//                             return;
+//                         }
+//                         System.out.println(split[0]);
+//                         System.out.println(split[1]);
+//                         User user = new User( split[0] + "",  split[1] + "");
+//                         user.setSocket(connectionSocket);
+//                         t[i] = new Thread(new ServerListener(user, "OK", messageQueue, i, GUI));
+// >>>>>>> master
                         t[i].start();
                         atMaxConnections = false;
                         break;
