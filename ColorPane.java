@@ -120,7 +120,7 @@ public class ColorPane extends JTextPane {
             case "\u001B[36m" -> D_Cyan;
             case "\u001B[37m" -> D_White;
             case "\u001B[0m" -> cReset;
-            default -> B_White;
+            default -> D_Black;
         };
     }
 }

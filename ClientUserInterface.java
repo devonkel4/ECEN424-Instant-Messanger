@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.Instant;
 
 public class ClientUserInterface {
     private JFrame f;
@@ -57,6 +58,7 @@ public class ClientUserInterface {
         logPanel.add(chatLogScroll);
         activePanel.add(activeUsersScroll);
 
+        chatLog.appendANSI("\u001B[30m");
         chatLog.setEditable(false);
         userInput.addKeyListener(keyListener);
 
@@ -79,10 +81,14 @@ public class ClientUserInterface {
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 String input = userInput.getText();
-                if (!input.equals("")) {
+                if (input.equals("/ping")) {
+                    out.println("/ping " + Instant.now().toString());
+                    userInput.setText("");
+                } else if (!input.equals("")) {
                     out.println(input);
                     userInput.setText("");
                 }
+
             }
         }
 

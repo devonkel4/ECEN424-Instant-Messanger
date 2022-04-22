@@ -35,7 +35,7 @@ public class ServerUserInterface {
         activeUsersScroll = new JScrollPane(activeUsers);
 
         Font originalFont = userInput.getFont();
-        Font resizedFont = new Font(originalFont.getName(), originalFont.getStyle(), 16);
+        Font resizedFont = new Font("Courier New", originalFont.getStyle(), 16);
         userInput.setFont(resizedFont);
         chatLog.setFont(resizedFont);
 
@@ -51,6 +51,7 @@ public class ServerUserInterface {
         logPanel.add(chatLogScroll);
         activePanel.add(activeUsersScroll);
 
+        chatLog.appendANSI("\u001B[30m");
         chatLog.setEditable(false);
         userInput.addKeyListener(keyListener);
 

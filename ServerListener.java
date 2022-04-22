@@ -26,11 +26,18 @@ public class ServerListener implements Runnable{
     private void parseFunction(String function) {
         String [] split = function.split(" ");
         String functionType = split[0].substring(1);
-        if (functionType.equals("nick")) {
-            String functionAnnouncement = id + " has changed their name to " + split[1];
-            id = split[1];
-            QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
-            messageQueue.add(functionMessage);
+        switch(functionType) {
+            case "nick" -> {
+                String functionAnnouncement = id + " has changed their name to " + split[1];
+                id = split[1];
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                messageQueue.add(functionMessage);
+            }
+            case "ping" -> {
+                String functionAnnouncement = "/pong " + split[1];
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                messageQueue.add(functionMessage);
+            }
         }
     }
 
