@@ -141,6 +141,23 @@ public class ClientUserInterface {
                             System.out.println(ee);
                         }
                     }
+                    // /filesend ./path/to/filename.txt
+                    case "/filesend" -> {
+                        if (split.length >= 2) {
+                            // set up sender server
+                            int portNum = socket.getPort() + 1;
+                            String filePath = split[1];
+                            Thread sendFile = new Thread(new FileSender(portNum, filePath));
+                            sendFile.start();
+                            chatLog.appendANSI("Trying to send file...");
+
+                            // set up information for receiver
+                            String [] splitPath = split[1].split("/");
+                            String fileName = splitPath[splitPath.length-1];
+                            out.println("/filesend " + portNum + " " + fileName);
+                            userInput.setText("");
+                        }
+                    }
                     default -> {
                         out.println(input);
                         userInput.setText("");

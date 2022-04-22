@@ -71,6 +71,14 @@ public class ServerListener implements Runnable{
                     }
                 }
             }
+            case "filesend" -> {
+                if (split.length > 2) {
+                    String host = user.getSocket().getInetAddress().toString().substring(1);
+                    int portNum = Integer.parseInt(split[1]);
+                    String fileName = split[2];
+                    new FileReceiver(host, portNum, fileName).run();
+                }
+            }
         }
     }
 
