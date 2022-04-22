@@ -59,9 +59,10 @@ public class ClientListener implements Runnable{
                             int portNum = Integer.parseInt(split[1]);
                             String fileName = split[2];
                             // TODO: user verify
-                            boolean receiveFile = true;
+                            int receiveFile = JOptionPane.showConfirmDialog(GUI.f, "Would you like to receive " + fileName + "?", "Receive file request",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-                            if (receiveFile) {
+                            if (receiveFile == JOptionPane.YES_OPTION) {
                                 System.out.println(host+":"+portNum);
                                 Thread receiveFileThread = new Thread(new ClientFileReceiver(host, portNum, fileName));
                                 receiveFileThread.start();

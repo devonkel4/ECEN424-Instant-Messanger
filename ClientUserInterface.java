@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.time.Instant;
 
 public class ClientUserInterface {
-    private JFrame f;
+    public JFrame f;
     private JPanel base;
     private JPanel upperPanel;
     private JPanel lowerPanel;
