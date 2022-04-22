@@ -21,7 +21,6 @@ public class User {
     public User(String username, String password) throws NoSuchAlgorithmException {
         this.username = username;
         setPassword(password);
-        setUsername(username);
         banned = false;
         nameColor = Color.NONE;
         textColor = Color.NONE;
@@ -57,6 +56,7 @@ public class User {
     public String getUsername(){
         return username;
     }
+    public void setUsername(String username) {this.username = username;}
     public Socket getSocket() { return socket; }
     public void setSocket(Socket socket) { this.socket = socket; }
     public Color getNameColor() { return nameColor; };
