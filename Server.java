@@ -79,6 +79,16 @@ public class Server {
                     if ( (t[i] == null) || (t[i] != null && !t[i].isAlive()) ) {
 
                         // TODO: authenticate users
+                        for (User user : users) {
+                            for (int j = 0; i < user.getBanList().size(); ++i){
+                                if (connectionSocket.getInetAddress().toString().equals(user.getBanList().get(j))) {
+                                    PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
+                                    out.println("Connection refused Banned user.");
+                                    System.out.println("Server. Banned user");
+                                    connectionSocket.close();
+                                }
+                            }
+                        }
                         User user = new User(i + "", i + "");
                         user.setSocket(connectionSocket);
                         t[i] = new Thread(new ServerListener(user, messageToSend, messageQueue, i, GUI));

@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.List;
 
 public class User {
     private static ArrayList<User> userList;
@@ -63,4 +64,5 @@ public class User {
     public Color getTextColor() { return textColor; }
     public void setNameColor(Color color) { nameColor = color; }
     public void setTextColor(Color color) { textColor = color; }
+    public List<String> getBanList() {return banList;}
 }
