@@ -28,7 +28,11 @@ public class ServerListener implements Runnable{
             case "nick" -> {
                 if (split.length > 1) {
                     String functionAnnouncement = user.getUsername() + " has changed their name to " + split[1];
-                    user.setUsername(split[1]);
+                    try {
+                        user.setUsername(split[1]);
+                    } catch (Exception e) {
+
+                    }
                     QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
                     messageQueue.add(functionMessage);
                 }
@@ -52,6 +56,18 @@ public class ServerListener implements Runnable{
 
                 QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, whisperMessage);
                 messageQueue.add(functionMessage);
+            }
+            case "namecolor" -> {
+                if (split.length > 1) {
+                    Color color = Color.valueOf(split[1]);
+                    user.setNameColor(color);
+                }
+            }
+            case "textcolor" -> {
+                if (split.length > 1) {
+                    Color color = Color.valueOf(split[1]);
+                    user.setTextColor(color);
+                }
             }
         }
     }

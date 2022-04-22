@@ -59,7 +59,10 @@ public class User {
     public String getUsername(){
         return username;
     }
-    public void setUsername(String username) { this.username = username; }
     public Socket getSocket() { return socket; }
     public void setSocket(Socket socket) { this.socket = socket; }
+    public Color getNameColor() { return nameColor; };
+    public Color getTextColor() { return textColor; }
+    public void setNameColor(Color color) { nameColor = color; }
+    public void setTextColor(Color color) { textColor = color; }
 }

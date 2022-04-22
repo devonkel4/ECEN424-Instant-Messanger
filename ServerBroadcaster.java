@@ -36,7 +36,8 @@ public class ServerBroadcaster implements Runnable{
                  switch(currentMessage.msgType) {
                      case MESSAGE -> {
                          // broadcast messages
-                        sendMessage("\u001B[31m" + currentMessage.user.getUsername() + ": \u001B[30m" + currentMessage.content);
+                         User currUser = currentMessage.user;
+                        sendMessage(currUser.getNameColor() + currUser.getUsername() + ": " + currUser.getTextColor() + currentMessage.content);
                      }
 
                      case CONNECT -> {
