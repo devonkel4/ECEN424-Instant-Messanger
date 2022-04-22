@@ -24,4 +24,5 @@ public class QueueMessage {
         this.msgType = msgType;
         this.content = content;
     }
+
 }
