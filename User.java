@@ -32,9 +32,7 @@ public class User {
     private void setPassword(String password) throws NoSuchAlgorithmException {
         hashedPassword = HashPass(password);
     }
-    public void setUsername(String username) throws NoSuchAlgorithmException {
-        this.username = username;
-    }
+
     //TODO: Implement Change PW function that verifies old password and sets new password if passed
     //DOC: Returns whether the password was changed
 //    public boolean changePassword(String old, String password){
