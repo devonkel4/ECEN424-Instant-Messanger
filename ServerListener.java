@@ -70,7 +70,7 @@ public class ServerListener implements Runnable{
                         messageQueue.add(disconnectMessage);
                         user.getSocket().close();
                         break;
-                    } else if (clientInput.charAt(0).equals("/")) {
+                    } else if (clientInput.charAt(0) == '/') {
                         parseFunction(clientInput);
                     } else {  // otherwise print message
                         QueueMessage stringMessage = new QueueMessage(MessageType.MESSAGE, user, clientInput);
