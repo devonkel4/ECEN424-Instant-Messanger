@@ -34,6 +34,10 @@ public class FileReceiver implements Runnable{
             boolean complete = true;
             int c;
             byte[] data = new byte[size];
+
+            // program receives 4 characters at the start of file transfer, unsure what it is
+            byte[] throwawaybuf = new byte[4];
+            inFromServer.read(throwawaybuf, 0, 4);
             //empty file case
             while (complete) {
                 c = inFromServer.read(data, 0, data.length);
