@@ -104,6 +104,10 @@ public class ServerBroadcaster implements Runnable{
                                      }
                                  }
                              }
+                             case "/pong" -> {
+                                 PrintWriter out = new PrintWriter(currentMessage.user.getSocket().getOutputStream(), true);
+                                 out.println(currentMessage.content);
+                             }
                              default -> {
                                  sendMessage(prependColor(currentMessage.content));
                              }

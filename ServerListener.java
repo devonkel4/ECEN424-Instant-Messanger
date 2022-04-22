@@ -40,8 +40,8 @@ public class ServerListener implements Runnable{
                 }
             }
             case "ping" -> {
-                String functionAnnouncement = "/ping " + split[1];
-                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                String functionAnnouncement = "/pong " + split[1];
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, user, functionAnnouncement);
                 messageQueue.add(functionMessage);
             }
             case "refreshusers" -> {
@@ -57,8 +57,12 @@ public class ServerListener implements Runnable{
             }
             case "namecolor" -> {
                 if (split.length > 1) {
-                    Color color = Color.valueOf(split[1]);
-                    user.setNameColor(color);
+                    try {
+                        Color color = Color.valueOf(split[1]);
+                        user.setNameColor(color);
+                    } catch (Exception e) {
+                        System.out.println("ERROR: Invalid enum constant");
+                    }
                 }
             }
             case "textcolor" -> {
