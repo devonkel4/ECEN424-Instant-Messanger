@@ -35,7 +35,6 @@ public class Server {
         int serverPort = isValidPort(args[0]);
         int maxClients = isNumeric(args[1]);
         BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingDeque<>();
-        String messageToSend = args[2];
 
         if (serverPort == -1) {
             System.out.println("ERROR: Port number is not valid.");
@@ -93,7 +92,7 @@ public class Server {
                         }
                         User user = new User(i + "", i + "");
                         user.setSocket(connectionSocket);
-                        t[i] = new Thread(new ServerListener(user, messageToSend, messageQueue, i, GUI));
+                        t[i] = new Thread(new ServerListener(user, "OK", messageQueue, i, GUI));
                         t[i].start();
                         atMaxConnections = false;
                         break;
