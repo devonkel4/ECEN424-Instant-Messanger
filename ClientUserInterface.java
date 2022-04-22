@@ -58,7 +58,7 @@ public class ClientUserInterface {
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = 3;
         c.weightx = 3;
-        c.weighty = 100.0;
+        c.weighty = 1;
         c.gridx = 0;
         c.gridy = 0;
         upperPanel.add(logPanel, c);
