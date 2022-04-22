@@ -34,13 +34,23 @@ public class ServerListener implements Runnable{
                 }
             }
             case "ping" -> {
-                String functionAnnouncement = "/pong " + split[1];
+                String functionAnnouncement = "/ping " + split[1];
                 QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
                 messageQueue.add(functionMessage);
             }
             case "refreshusers" -> {
                 String functionAnnouncement = "/refreshusers ";
                 QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                messageQueue.add(functionMessage);
+            }
+            case "w" -> {
+                String whisperMessage = "";
+                for (int j = 2; j < split.length; ++j) {
+                    whisperMessage += split[j];
+                    whisperMessage += " ";
+                }
+
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, whisperMessage);
                 messageQueue.add(functionMessage);
             }
         }
