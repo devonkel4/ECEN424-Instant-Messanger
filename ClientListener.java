@@ -53,7 +53,6 @@ public class ClientListener implements Runnable{
                             if (!username.equals("/refreshusers")) {
                                 String [] tempArray = {username};
                                 newTableModel.addRow(tempArray);
-                                System.out.println(username);
                             }
                         }
                         GUI.activeUsers.setModel(newTableModel);

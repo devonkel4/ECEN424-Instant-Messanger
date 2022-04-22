@@ -35,6 +35,8 @@ public class ServerListener implements Runnable{
                     }
                     QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
                     messageQueue.add(functionMessage);
+                    QueueMessage refreshMessage = new QueueMessage(MessageType.FUNCTION, "/refreshusers ");
+                    messageQueue.add(refreshMessage);
                 }
             }
             case "ping" -> {

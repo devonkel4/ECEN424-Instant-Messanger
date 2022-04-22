@@ -15,6 +15,11 @@ public class ServerBroadcaster implements Runnable{
         this.users = users;
     }
 
+    // make all function announcements blue
+    public String prependColor(String string) {
+        return Color.BLUE + string;
+    }
+
     public void sendMessage(String input) {
         try {
             for (User user: users) {
@@ -30,6 +35,7 @@ public class ServerBroadcaster implements Runnable{
     }
 
     public void run() {
+
         while (true) {
             try {
                 QueueMessage currentMessage = queue.take();
@@ -48,6 +54,8 @@ public class ServerBroadcaster implements Runnable{
                      case DISCONNECT -> {
                          // handle disconnect
                          users.remove(currentMessage.user);
+                         QueueMessage refreshMessage = new QueueMessage(MessageType.FUNCTION, "/refreshusers ");
+                         queue.add(refreshMessage);
                      }
 
                      case FILE -> {
@@ -65,7 +73,7 @@ public class ServerBroadcaster implements Runnable{
                                  sendMessage(currentMessage.content);
                              }
                              default -> {
-                                 sendMessage(currentMessage.content);
+                                 sendMessage(prependColor(currentMessage.content));
                              }
                          }
                      }

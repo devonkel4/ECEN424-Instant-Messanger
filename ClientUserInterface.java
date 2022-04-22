@@ -64,10 +64,20 @@ public class ClientUserInterface {
         //chatLog.setEditable(false);
         userInput.addKeyListener(keyListener);
 
+
         f.add(base);
         f.setSize(1000,500);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(500);
+                out.println("/refreshusers");
+            } catch (Exception e) {
+
+            }
+        }).start();
     }
 
     public static void main(String [] args) {
