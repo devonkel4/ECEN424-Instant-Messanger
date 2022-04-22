@@ -1,22 +1,24 @@
 import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
+import java.io.File;
+import java.io.FileWriter;
 import java.net.*;
 import java.io.*;
 
 public class ServerBroadcaster implements Runnable{
     BlockingQueue<QueueMessage> queue;
     ServerUserInterface GUI;
-    LinkedList<Socket> sockets;
-    public ServerBroadcaster(BlockingQueue<QueueMessage> queue, ServerUserInterface GUI, LinkedList<Socket> sockets) {
+    LinkedList<User> users;
+    public ServerBroadcaster(BlockingQueue<QueueMessage> queue, ServerUserInterface GUI, LinkedList<User> users) {
         this.queue = queue;
         this.GUI = GUI;
-        this.sockets = sockets;
+        this.users = users;
     }
 
     public void sendMessage(String input) {
         try {
-            for (Socket socket : sockets) {
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            for (User user: users) {
+                PrintWriter out = new PrintWriter(user.getSocket().getOutputStream(), true);
                 out.println(input);
             }
             GUI.chatLog.appendANSI(input + "\n");
@@ -24,6 +26,7 @@ public class ServerBroadcaster implements Runnable{
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
         }
+
     }
 
     public void run() {
@@ -33,17 +36,17 @@ public class ServerBroadcaster implements Runnable{
                  switch(currentMessage.msgType) {
                      case MESSAGE -> {
                          // broadcast messages
-                        sendMessage("\u001B[31m" + currentMessage.id + ": \u001B[30m" + currentMessage.content);
+                        sendMessage("\u001B[31m" + currentMessage.user.getUsername() + ": \u001B[30m" + currentMessage.content);
                      }
 
                      case CONNECT -> {
                          // handle connect
-                         sockets.add(currentMessage.socket);
+                         users.add(currentMessage.user);
                      }
 
                      case DISCONNECT -> {
                          // handle disconnect
-                         sockets.remove(currentMessage.socket);
+                         users.remove(currentMessage.user);
                      }
 
                      case FILE -> {
@@ -51,7 +54,19 @@ public class ServerBroadcaster implements Runnable{
                      }
 
                      case FUNCTION -> {
-                         sendMessage(currentMessage.content);
+                         String [] split = currentMessage.content.split(" ");
+                         switch(split[0]) {
+                             case "/refreshusers" -> {
+                                 // TODO: get users
+                                 for (User user : users) {
+                                     currentMessage.content += user.getUsername() + " ";
+                                 }
+                                 sendMessage(currentMessage.content);
+                             }
+                             default -> {
+                                 sendMessage(currentMessage.content);
+                             }
+                         }
                      }
                      case EXIT -> {
                          System.exit(0);

@@ -6,76 +6,98 @@ import java.net.*;
 import java.util.concurrent.BlockingQueue;
 
 public class ServerListener implements Runnable{
-    Socket connectionSocket;
+    User user;
     String messageToSend;
     BlockingQueue<QueueMessage> messageQueue;
-    String id;
     ServerUserInterface GUI;
 //    static FileWriter fileWriter;
-    public ServerListener(Socket connectionSocket, String messageToSend, BlockingQueue<QueueMessage> messageQueue, int i,
+    public ServerListener(User user, String messageToSend, BlockingQueue<QueueMessage> messageQueue, int i,
                           ServerUserInterface GUI) {
-        this.connectionSocket = connectionSocket;
+        this.user = user;
         this.messageToSend = messageToSend;
         this.messageQueue = messageQueue;
         this.GUI = GUI;
-        QueueMessage connectMessage = new QueueMessage(MessageType.CONNECT, connectionSocket);
+        QueueMessage connectMessage = new QueueMessage(MessageType.CONNECT, user);
         messageQueue.add(connectMessage);
-        id = i + "";
     }
 
     private void parseFunction(String function) {
         String [] split = function.split(" ");
         String functionType = split[0].substring(1);
-        if (functionType.equals("nick")) {
-            String functionAnnouncement = id + " has changed their name to " + split[1];
-            id = split[1];
-            QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
-            messageQueue.add(functionMessage);
+        switch(functionType) {
+            case "nick" -> {
+                if (split.length > 1) {
+                    String functionAnnouncement = user.getUsername() + " has changed their name to " + split[1];
+                    user.setUsername(split[1]);
+                    QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                    messageQueue.add(functionMessage);
+                }
+            }
+            case "ping" -> {
+                String functionAnnouncement = "/ping " + split[1];
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                messageQueue.add(functionMessage);
+            }
+            case "refreshusers" -> {
+                String functionAnnouncement = "/refreshusers ";
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                messageQueue.add(functionMessage);
+            }
+            case "w" -> {
+                String whisperMessage = "";
+                for (int j = 2; j < split.length; ++j) {
+                    whisperMessage += split[j];
+                    whisperMessage += " ";
+                }
+
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, whisperMessage);
+                messageQueue.add(functionMessage);
+            }
         }
     }
 
     public void run() {
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(user.getSocket().getInputStream()));
+            PrintWriter out = new PrintWriter(user.getSocket().getOutputStream(), true);
             String clientInput;
 
             out.println(messageToSend);
 
             // get client ip address and port
-            String clientHost = connectionSocket.getInetAddress().toString();
+            String clientHost = user.getSocket().getInetAddress().toString();
             String clientIp = clientHost.split("/")[1];
-            String clientPort = connectionSocket.getPort() + "";
+            String clientPort = user.getSocket().getPort() + "";
 
             System.out.printf("%s:%s has connected.\n", clientIp, clientPort);
 
+            // terminate connection if "\\disconnect" is received
+            try {
             while ((clientInput = in.readLine()) != null) {
-                // terminate connection if "\\disconnect" is received
-                try {
                     if (clientInput.equals("\\disconnect")) {
                         System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);
-                        QueueMessage disconnectMessage = new QueueMessage(MessageType.DISCONNECT, connectionSocket);
+                        QueueMessage disconnectMessage = new QueueMessage(MessageType.DISCONNECT, user);
                         messageQueue.add(disconnectMessage);
-                        connectionSocket.close();
+                        user.getSocket().close();
                         break;
-                    } else if (clientInput.substring(0,1).equals("/")) {
+                    } else if (clientInput.charAt(0) == '/') {
                         parseFunction(clientInput);
                     } else {  // otherwise print message
-                        QueueMessage stringMessage = new QueueMessage(MessageType.MESSAGE, connectionSocket, clientInput);
-                        stringMessage.id = id;
+                        QueueMessage stringMessage = new QueueMessage(MessageType.MESSAGE, user, clientInput);
                         messageQueue.add(stringMessage);
                         System.out.printf("%s:%s: %s\n", clientIp, clientPort, clientInput);
 //                        fileWriter.write("<" + clientIp + ":" + clientPort + "> " + clientInput + '\n');
 
                     }
-                } catch (SocketException se) {
-                    System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);
-                    QueueMessage disconnectMessage = new QueueMessage(MessageType.DISCONNECT, connectionSocket);
-                    messageQueue.add(disconnectMessage);
-                    connectionSocket.close();
+
                 }
+            } catch (SocketException se) {
+                System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);
+                QueueMessage disconnectMessage = new QueueMessage(MessageType.DISCONNECT, user);
+                messageQueue.add(disconnectMessage);
+                user.getSocket().close();
             }
-            connectionSocket.close();
+            user.getSocket().close();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());

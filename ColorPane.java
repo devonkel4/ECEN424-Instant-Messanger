@@ -29,9 +29,7 @@ public class ColorPane extends JTextPane {
         int len = getDocument().getLength(); // same value as getText().length();
         setCaretPosition(len);  // place caret at the end (with no selection)
         setCharacterAttributes(aset, false);
-        this.setEditable(true);
         replaceSelection(s); // there is no selection, so inserts at caret
-        this.setEditable(false);
     }
 
     public void appendANSI(String s) { // convert ANSI color codes first
@@ -120,7 +118,7 @@ public class ColorPane extends JTextPane {
             case "\u001B[36m" -> D_Cyan;
             case "\u001B[37m" -> D_White;
             case "\u001B[0m" -> cReset;
-            default -> B_White;
+            default -> D_Black;
         };
     }
 }
