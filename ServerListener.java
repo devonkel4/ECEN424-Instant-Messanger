@@ -21,6 +21,15 @@ public class ServerListener implements Runnable{
         messageQueue.add(connectMessage);
     }
 
+    private void sendToUser(String message) {
+        try {
+            PrintWriter out = new PrintWriter(user.getSocket().getOutputStream(), true);
+            out.println(message);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     private void parseFunction(String function) {
         String [] split = function.split(" ");
         String functionType = split[0].substring(1);
@@ -60,8 +69,9 @@ public class ServerListener implements Runnable{
                     try {
                         Color color = Color.valueOf(split[1]);
                         user.setNameColor(color);
-                    } catch (Exception e) {
+                    } catch (IllegalArgumentException e) {
                         System.out.println("ERROR: Invalid enum constant");
+                        sendToUser("ERROR: Invalid enum constant");
                     }
                 }
             }
@@ -70,8 +80,9 @@ public class ServerListener implements Runnable{
                     try {
                         Color color = Color.valueOf(split[1]);
                         user.setTextColor(color);
-                    } catch (Exception e) {
+                    } catch (IllegalArgumentException e) {
                         System.out.println("ERROR: Invalid enum constant");
+                        sendToUser("ERROR: Invalid enum constant");
                     }
                 }
             }
