@@ -1,10 +1,13 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.net.Socket;
 import java.time.Instant;
 
@@ -58,7 +61,7 @@ public class ClientUserInterface {
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = 3;
         c.weightx = 3;
-        c.weighty = 100.0;
+        c.weighty = 1;
         c.gridx = 0;
         c.gridy = 0;
         upperPanel.add(logPanel, c);
@@ -108,25 +111,41 @@ public class ClientUserInterface {
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 String input = userInput.getText();
-                if (input.equals("/ping")) {
-                    out.println("/ping " + Instant.now().toString());
-                    userInput.setText("");
-                } else if (input.equals("/help")) {
-                    userInput.setText("");
-                    String helpText = Color.BLACK + "--------------------------------------\n" +
-                            "Commands:\n" +
-                            "/namecolor <color name>\t\tChange the color of your name to all users\n" +
-                            "/textcolor <color name>\t\tChange the color of text you type to all users\n" +
-                            "/refreshusers \t\t\t\tForce refresh user list\n" +
-                            "/ping \t\t\t\t\tPing the server and see latency\n" +
-                            "/w <user>\t\t\t\tWhisper a user\n" +
-                            "--------------------------------------\n";
-                    chatLog.appendANSI(helpText);
-                } else if (!input.equals("")) {
-                    out.println(input);
-                    userInput.setText("");
+                String [] split = input.split(" ");
+                switch (split[0]) {
+                    case "/ping" -> {
+                        out.println("/ping " + Instant.now().toString());
+                        userInput.setText("");
+                    }
+                    case "/help" -> {
+                        userInput.setText("");
+                        String helpText = Color.BLACK + "--------------------------------------\n" +
+                                "Commands:\n" +
+                                "/nick <name>\t\t\tChange your username" +
+                                "/namecolor <color name>\t\tChange the color of your name to all users\n" +
+                                "/textcolor <color name>\t\tChange the color of text you type to all users\n" +
+                                "/refreshusers \t\t\t\tForce refresh user list\n" +
+                                "/ping \t\t\t\t\tPing the server and see latency\n" +
+                                "/w <user>\t\t\t\tWhisper a user\n" +
+                                "\\disconnect\t\t\tDisconnect\n" +
+                                "--------------------------------------\n";
+                        chatLog.appendANSI(helpText);
+                    }
+                    case "/bgcolor" -> {
+                        try {
+                            Field field = Class.forName("java.awt.Color").getField(split[1]);
+                            java.awt.Color color = (java.awt.Color) field.get(null);
+                            chatLog.setBackground(color);
+                            userInput.setText("");
+                        } catch (Exception ee) {
+                            System.out.println(ee);
+                        }
+                    }
+                    default -> {
+                        out.println(input);
+                        userInput.setText("");
+                    }
                 }
-
             }
         }
 

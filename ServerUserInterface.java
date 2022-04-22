@@ -25,6 +25,9 @@ public class ServerUserInterface {
         f = new JFrame("Server");
         base = new JPanel(new BorderLayout());
         upperPanel = new JPanel(new GridLayout());
+        upperPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
         lowerPanel = new JPanel(new GridLayout());
         logPanel = new JPanel(new GridLayout());
         activePanel = new JPanel(new GridLayout());
@@ -44,8 +47,21 @@ public class ServerUserInterface {
         base.add(upperPanel);
         base.add(lowerPanel,BorderLayout.SOUTH);
 
-        upperPanel.add(logPanel);
-        upperPanel.add(activePanel);
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = 3;
+        c.weightx = 3;
+        c.weighty = 1;
+        c.gridx = 0;
+        c.gridy = 0;
+        upperPanel.add(logPanel, c);
+
+        c.weightx = 0;
+        c.gridwidth = 1;
+        c.gridx = 3;
+        c.gridy = 0;
+
+
+        upperPanel.add(activePanel, c);
         lowerPanel.add(userInput);
 
         logPanel.add(chatLogScroll);
