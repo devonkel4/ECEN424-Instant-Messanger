@@ -76,7 +76,8 @@ public class ServerListener implements Runnable{
                     String host = user.getSocket().getInetAddress().toString().substring(1);
                     int portNum = Integer.parseInt(split[1]);
                     String fileName = split[2];
-                    new FileReceiver(host, portNum, fileName).run();
+                    Thread fileReceive = new Thread(new ServerFileReceiver(host, portNum, fileName, messageQueue));
+                    fileReceive.start();
                 }
             }
         }

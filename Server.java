@@ -80,7 +80,9 @@ public class Server {
 
                         // TODO: authenticate users
                         for (User user : users) {
-                            for (int j = 0; i < user.getBanList().size(); ++i){
+                            // ban list is null, commented out for testing
+//                            for (int j = 0; i < user.getBanList().size(); ++i){
+                            for (int j = 0; i < 0; ++i){
                                 if (connectionSocket.getInetAddress().toString().equals(user.getBanList().get(j))) {
                                     PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
                                     out.println("Connection refused Banned user.");

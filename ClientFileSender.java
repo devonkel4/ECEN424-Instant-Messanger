@@ -1,10 +1,10 @@
 import java.io.*;
 import java.net.*;
 
-public class FileSender implements Runnable{
+public class ClientFileSender implements Runnable{
     int portNum;
     String filename;
-    public FileSender(int portNum, String filename) {
+    public ClientFileSender(int portNum, String filename) {
         this.portNum = portNum;
         this.filename = filename;
     }
@@ -14,6 +14,8 @@ public class FileSender implements Runnable{
         boolean fileExists = true;
         try {
             serverSocket = new ServerSocket(portNum);
+            // if no response within 1 minute, terminate
+            serverSocket.setSoTimeout(60000);
             Socket socket = serverSocket.accept();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

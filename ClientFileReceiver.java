@@ -1,7 +1,7 @@
 import java.net.Socket;
 import java.io.*;
 
-public class FileReceiver implements Runnable{
+public class ClientFileReceiver implements Runnable{
 
     String hostName;
     int portNum;
@@ -14,15 +14,17 @@ public class FileReceiver implements Runnable{
     PrintWriter pw;
     int size = 9022386;
 
-    public FileReceiver(String hostName, int portNum, String fileName) {
+    public ClientFileReceiver(String hostName, int portNum, String fileName) {
         this.hostName = hostName;
         this.portNum = portNum;
         this.fileName = fileName;
     }
 
     public void run() {
+        System.out.println("File receiver started");
         try {
             clientSocket = new Socket(hostName, portNum);
+            System.out.println("Conncected to file server");
             inFromServer = clientSocket.getInputStream();
             pw = new PrintWriter(clientSocket.getOutputStream(), true);
             outToServer = clientSocket.getOutputStream();

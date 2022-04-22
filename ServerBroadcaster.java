@@ -61,6 +61,12 @@ public class ServerBroadcaster implements Runnable{
 
                      case FILE -> {
                          // TODO: serve files
+                         // hardcoded portNumber right now, make it be based off something else in the future
+                        int portNum = 12356;
+                        System.out.println("Server finished receiving, sending content to users");
+                        Thread sendFileHost = new Thread(new ServerFileHost(portNum, currentMessage.content));
+                        sendFileHost.start();
+                        sendMessage("/filereceive " + portNum + " " + currentMessage.content);
                      }
 
                      case FUNCTION -> {

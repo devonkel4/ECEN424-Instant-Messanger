@@ -1,9 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
@@ -147,9 +142,9 @@ public class ClientUserInterface {
                             // set up sender server
                             int portNum = socket.getPort() + 1;
                             String filePath = split[1];
-                            Thread sendFile = new Thread(new FileSender(portNum, filePath));
+                            Thread sendFile = new Thread(new ClientFileSender(portNum, filePath));
                             sendFile.start();
-                            chatLog.appendANSI("Trying to send file...");
+                            chatLog.appendANSI("Trying to send file...\n");
 
                             // set up information for receiver
                             String [] splitPath = split[1].split("/");

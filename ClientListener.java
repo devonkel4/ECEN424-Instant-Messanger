@@ -1,14 +1,10 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.*;
-import java.awt.*;
 import java.net.*;
 import java.io.*;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Vector;
 
 public class ClientListener implements Runnable{
     Socket socket;
@@ -56,6 +52,22 @@ public class ClientListener implements Runnable{
                             }
                         }
                         GUI.activeUsers.setModel(newTableModel);
+                    }
+                    case "/filereceive" -> {
+                        if (split.length > 2) {
+                            String host = socket.getInetAddress().toString().split("/")[1];
+                            int portNum = Integer.parseInt(split[1]);
+                            String fileName = split[2];
+                            // TODO: user verify
+                            boolean receiveFile = true;
+
+                            if (receiveFile) {
+                                System.out.println(host+":"+portNum);
+                                Thread receiveFileThread = new Thread(new ClientFileReceiver(host, portNum, fileName));
+                                receiveFileThread.start();
+                                GUI.chatLog.appendANSI("Receiving file: " + fileName + "\n");
+                            }
+                        }
                     }
                     default -> {
                         GUI.chatLog.appendANSI(serverInput + "\n");
