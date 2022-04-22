@@ -73,14 +73,18 @@ public class ServerBroadcaster implements Runnable{
                                  sendMessage(currentMessage.content);
                              }
                              case "/w" ->{
+                                 if (split.length < 3){
+                                     return;
+                                 }
                                  String whisperMessage = "";
                                  for (int j = 2; j < split.length; ++j) {
                                      whisperMessage += split[j];
                                      whisperMessage += " ";
                                  }
-                                 String whole = "\u001B[3m" + currentMessage.user.getUsername() + "whispers" + whisperMessage;
+                                 String whole = "\u001B[3m" + currentMessage.user.getUsername() + " whispers " + whisperMessage;
                                  for (User user: users){
                                      if (user.getUsername().equals(split[1])){
+
                                          PrintWriter out = new PrintWriter(user.getSocket().getOutputStream(), true);
                                          out.println(whole);
                                          GUI.chatLog.appendANSI(whole + "\n");

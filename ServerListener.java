@@ -51,13 +51,8 @@ public class ServerListener implements Runnable{
             }
             case "w" -> {
                 String functionAnnouncement = function;
-                String whisperMessage = "";
-                for (int j = 2; j < split.length; ++j) {
-                    whisperMessage += split[j];
-                    whisperMessage += " ";
-                }
 
-                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, functionAnnouncement);
+                QueueMessage functionMessage = new QueueMessage(MessageType.FUNCTION, user, functionAnnouncement);
                 messageQueue.add(functionMessage);
             }
             case "namecolor" -> {
