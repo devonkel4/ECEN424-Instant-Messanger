@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.net.*;
 
@@ -68,6 +69,8 @@ public class Client {
                 Thread t = new Thread(new ClientListener(clientSocket, GUI));
                 t.start();
             }
+            else
+                GUI.chatLog.appendANSI(Color.BLACK + serverMessage + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
