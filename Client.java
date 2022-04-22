@@ -78,7 +78,8 @@ public class Client {
                 Thread t = new Thread(new ClientListener(clientSocket, GUI));
                 t.start();
             }
-            else {
+            else{
+                GUI.chatLog.appendANSI(Color.BLACK + serverMessage + "\n");
                 System.exit(1);
             }
         } catch (Exception e) {

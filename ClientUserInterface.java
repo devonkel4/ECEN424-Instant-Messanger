@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.Socket;
@@ -82,15 +85,30 @@ public class ClientUserInterface {
         f.setSize(1250,650);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         new Thread(() -> {
+            //AUTHENICATION SECTION
+            String userIn = JOptionPane.showInputDialog(f, "Username");
+            String pwdIn = JOptionPane.showInputDialog(f, "Password");
+            System.out.println("info gathered");
+//            BufferedWriter out = null;
+            //                out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            out.println(userIn + " " + pwdIn);
             try {
                 Thread.sleep(500);
                 //out.println("/refreshusers");
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
+            out.println("/refreshusers");
         }).start();
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(500);
+//                out.println("/refreshusers");
+//            } catch (Exception e) {
+//
+//            }
+//        }).start();
     }
 
     public static void main(String [] args) {

@@ -62,6 +62,7 @@ public class Server {
     public static void main(String [] args) {
         int serverPort = isValidPort(args[0]);
         int maxClients = isNumeric(args[1]);
+        User.userList = new ArrayList<User>(1);
         BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingDeque<>();
 
         if (serverPort == -1) {
@@ -106,6 +107,35 @@ public class Server {
                     if ( (t[i] == null) || (t[i] != null && !t[i].isAlive()) ) {
 
                         // TODO: authenticate users
+                        User currUser = null;
+                        BufferedReader tempIn = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+                        String authStr = tempIn.readLine();
+                        String[] authSplit = authStr.split(" ");
+                        boolean found = false;
+                        boolean authenticated = false;
+                        for(User user : User.userList){
+                            if (user.getUsername().equals(authSplit[0])){
+                                found = true;
+                                authenticated = user.verifyPW(authSplit[1]);
+                                currUser = user;
+                                break;
+                            }
+                        }
+                        if (!found){
+//                            users.addLast(new User(authSplit[0], authSplit[1]));
+                            currUser = new User(authSplit[0], authSplit[1]);
+                            User.userList.add(currUser);
+                            authenticated = true;
+                        }
+                        if (!authenticated){
+                            PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
+                            out.println("Connection refused invalid login.");
+                            System.out.println("Server. Bad login");
+                            connectionSocket.close();
+                            atMaxConnections = false;
+                            break;
+                        }
+                        users.addLast(currUser); // adds no matter whether its new or old to active
                         for (User user : users) {
                             // ban list is null, commented out for testing
 //                            for (int j = 0; i < user.getBanList().size(); ++i){
@@ -118,26 +148,32 @@ public class Server {
                                 }
                             }
                         }
-                        String name = "";
-                        try {
-                             name = logInfo(connectionSocket, users);
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        String [] split = name.split(" ");
-                        if (split.length < 2){
-                            PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
-                            out.println("Connection refused.");
-                            System.out.println("Server.Username or password already exist");
-                            connectionSocket.close();
-                            return;
-                        }
-                        System.out.println(split[0]);
-                        System.out.println(split[1]);
-                        User user = new User( split[0] + "",  split[1] + "");
-                        user.setSocket(connectionSocket);
-                        t[i] = new Thread(new ServerListener(user, "OK", messageQueue, i, GUI));
+// <<<<<<< Login
+                        //User user = new User(i + "", i + "");
+                        currUser.setSocket(connectionSocket);
+                        t[i] = new Thread(new ServerListener(currUser, "OK", messageQueue, i, GUI));
+// =======
+//                         String name = "";
+//                         try {
+//                              name = logInfo(connectionSocket, users);
+//                         } catch (Exception e) {
+//                             // TODO Auto-generated catch block
+//                             e.printStackTrace();
+//                         }
+//                         String [] split = name.split(" ");
+//                         if (split.length < 2){
+//                             PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
+//                             out.println("Connection refused.");
+//                             System.out.println("Server.Username or password already exist");
+//                             connectionSocket.close();
+//                             return;
+//                         }
+//                         System.out.println(split[0]);
+//                         System.out.println(split[1]);
+//                         User user = new User( split[0] + "",  split[1] + "");
+//                         user.setSocket(connectionSocket);
+//                         t[i] = new Thread(new ServerListener(user, "OK", messageQueue, i, GUI));
+// >>>>>>> master
                         t[i].start();
                         atMaxConnections = false;
                         break;

@@ -50,7 +50,7 @@ public class ServerBroadcaster implements Runnable{
 
                      case CONNECT -> {
                          // handle connect
-                         users.add(currentMessage.user);
+//                         users.add(currentMessage.user);
                      }
 
                      case DISCONNECT -> {

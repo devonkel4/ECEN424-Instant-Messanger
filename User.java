@@ -7,7 +7,7 @@ import java.security.MessageDigest;
 import java.util.List;
 
 public class User {
-    private static ArrayList<User> userList;
+    public static ArrayList<User> userList;
     public static ArrayList<String> banList; //will either hold ips or unames
 
     private Socket socket;
@@ -39,6 +39,8 @@ public class User {
 //
 //    }
     public boolean verifyPW(String password) throws NoSuchAlgorithmException {
+        System.out.println(hashedPassword);
+        System.out.println(HashPass(password));
         return hashedPassword.equals(HashPass(password));
     }
 
