@@ -49,6 +49,7 @@ public class ServerFileSender implements Runnable{
                 file.close();
                 oout.close();
                 output.close();
+                socket.close();
             }
         } catch (Exception e) {
             e.printStackTrace();

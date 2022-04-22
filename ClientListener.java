@@ -58,7 +58,7 @@ public class ClientListener implements Runnable{
                             String host = socket.getInetAddress().toString().split("/")[1];
                             int portNum = Integer.parseInt(split[1]);
                             String fileName = split[2];
-                            // TODO: user verify
+
                             int receiveFile = JOptionPane.showConfirmDialog(GUI.f, "Would you like to receive " + fileName + "?", "Receive file request",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 

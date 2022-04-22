@@ -52,6 +52,8 @@ public class ClientFileSender implements Runnable{
                 oout.close();
                 output.close();
             }
+            socket.close();
+            serverSocket.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());

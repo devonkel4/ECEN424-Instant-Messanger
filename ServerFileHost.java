@@ -25,6 +25,7 @@ public class ServerFileHost implements Runnable{
             } catch (SocketTimeoutException ste) {
                 System.out.println(ste);
                 System.out.println("Socket timed out, closing file server");
+                serverSocket.close();
             }
         } catch (Exception e) {
             System.out.println(e);

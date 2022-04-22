@@ -56,6 +56,7 @@ public class ServerFileReceiver implements Runnable{
             fileOut.close();
             QueueMessage broadcastFileMessage = new QueueMessage(MessageType.FILE, fileName);
             messageQueue.add(broadcastFileMessage);
+            clientSocket.close();
         } catch (Exception exc) {
             System.out.println("Exception: " + exc.getMessage());
         }

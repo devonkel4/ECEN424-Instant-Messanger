@@ -52,6 +52,7 @@ public class ClientFileReceiver implements Runnable{
                 }
             }
             fileOut.close();
+            clientSocket.close();
         } catch (Exception exc) {
             System.out.println("Exception: " + exc.getMessage());
         }
