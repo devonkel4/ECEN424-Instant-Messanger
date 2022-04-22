@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.*;
 import java.awt.*;
 import java.net.*;
@@ -6,6 +7,8 @@ import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class ClientListener implements Runnable{
     Socket socket;
@@ -33,13 +36,31 @@ public class ClientListener implements Runnable{
             while((serverInput = in.readLine()) != null) {
                 JScrollBar scrollBar = GUI.chatLogScroll.getVerticalScrollBar();
                 String [] split = serverInput.split(" ");
-                if (split.length == 2 && split[0].equals("/pong")) {
-                    Instant pingTime = Instant.parse(split[1]);
-                    Instant currTime = Instant.now();
-                    String timeBetween = ChronoUnit.MILLIS.between(pingTime, currTime) + "";
-                    GUI.chatLog.appendANSI("\u001B[30mPong! (" + timeBetween + " ms)\n");
-                } else {
-                    GUI.chatLog.appendANSI(serverInput + "\n");
+                switch (split[0]) {
+                    case "/pong" -> {
+                        if (split.length == 2) {
+                            Instant pingTime = Instant.parse(split[1]);
+                            Instant currTime = Instant.now();
+                            String timeBetween = ChronoUnit.MILLIS.between(pingTime, currTime) + "";
+                            GUI.chatLog.appendANSI("\u001B[30mPong! (" + timeBetween + " ms)\n");
+                        }
+                    }
+                    case "/refreshusers" -> {
+                        int i = 0;
+                        DefaultTableModel newTableModel = new DefaultTableModel();
+                        newTableModel.addColumn("Users");
+                        for (String username : split) {
+                            if (!username.equals("/refreshusers")) {
+                                String [] tempArray = {username};
+                                newTableModel.addRow(tempArray);
+                                System.out.println(username);
+                            }
+                        }
+                        GUI.activeUsers.setModel(newTableModel);
+                    }
+                    default -> {
+                        GUI.chatLog.appendANSI(serverInput + "\n");
+                    }
                 }
                 if (scrollBar.getValue() >= scrollBar.getMaximum()-500) {  // auto scroll past a certain point
                     scrollBar.setValue(scrollBar.getMaximum());

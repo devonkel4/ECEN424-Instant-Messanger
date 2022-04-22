@@ -55,6 +55,10 @@ public class ServerBroadcaster implements Runnable{
                          switch(split[0]) {
                              case "/refreshusers" -> {
                                  // TODO: get users
+                                 for (User user : users) {
+                                     currentMessage.content += user.getUsername() + " ";
+                                 }
+                                 sendMessage(currentMessage.content);
                              }
                              default -> {
                                  sendMessage(currentMessage.content);

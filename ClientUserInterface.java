@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.StyleContext;
 import java.awt.*;
@@ -47,6 +48,7 @@ public class ClientUserInterface {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+
 
         base.add(upperPanel);
         base.add(lowerPanel,BorderLayout.SOUTH);

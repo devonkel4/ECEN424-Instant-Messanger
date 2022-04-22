@@ -61,9 +61,9 @@ public class ServerListener implements Runnable{
 
             System.out.printf("%s:%s has connected.\n", clientIp, clientPort);
 
+            // terminate connection if "\\disconnect" is received
+            try {
             while ((clientInput = in.readLine()) != null) {
-                // terminate connection if "\\disconnect" is received
-                try {
                     if (clientInput.equals("\\disconnect")) {
                         System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);
                         QueueMessage disconnectMessage = new QueueMessage(MessageType.DISCONNECT, user);
@@ -79,12 +79,13 @@ public class ServerListener implements Runnable{
 //                        fileWriter.write("<" + clientIp + ":" + clientPort + "> " + clientInput + '\n');
 
                     }
-                } catch (SocketException se) {
-                    System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);
-                    QueueMessage disconnectMessage = new QueueMessage(MessageType.DISCONNECT, user);
-                    messageQueue.add(disconnectMessage);
-                    user.getSocket().close();
+
                 }
+            } catch (SocketException se) {
+                System.out.printf("%s:%s has disconnected.\n", clientIp, clientPort);
+                QueueMessage disconnectMessage = new QueueMessage(MessageType.DISCONNECT, user);
+                messageQueue.add(disconnectMessage);
+                user.getSocket().close();
             }
             user.getSocket().close();
         } catch (Exception e) {
