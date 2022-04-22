@@ -27,7 +27,11 @@ public class ClientUserInterface {
 
         f = new JFrame("Client");
         base = new JPanel(new BorderLayout());
-        upperPanel = new JPanel(new GridLayout());
+        upperPanel = new JPanel();
+
+        upperPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
         lowerPanel = new JPanel(new GridLayout());
         logPanel = new JPanel(new GridLayout());
         activePanel = new JPanel(new GridLayout());
@@ -49,12 +53,23 @@ public class ClientUserInterface {
             JOptionPane.showMessageDialog(null, e);
         }
 
-
         base.add(upperPanel);
         base.add(lowerPanel,BorderLayout.SOUTH);
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = 3;
+        c.weightx = 3;
+        c.weighty = 100.0;
+        c.gridx = 0;
+        c.gridy = 0;
+        upperPanel.add(logPanel, c);
 
-        upperPanel.add(logPanel);
-        upperPanel.add(activePanel);
+        c.weightx = 0;
+        c.gridwidth = 1;
+        c.gridx = 3;
+        c.gridy = 0;
+
+
+        upperPanel.add(activePanel, c);
         lowerPanel.add(userInput);
 
         logPanel.add(chatLogScroll);
@@ -66,7 +81,7 @@ public class ClientUserInterface {
 
 
         f.add(base);
-        f.setSize(1000,500);
+        f.setSize(1250,650);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -96,6 +111,17 @@ public class ClientUserInterface {
                 if (input.equals("/ping")) {
                     out.println("/ping " + Instant.now().toString());
                     userInput.setText("");
+                } else if (input.equals("/help")) {
+                    userInput.setText("");
+                    String helpText = Color.BLACK + "--------------------------------------\n" +
+                            "Commands:\n" +
+                            "/namecolor <color name>\t\tChange the color of your name to all users\n" +
+                            "/textcolor <color name>\t\tChange the color of text you type to all users\n" +
+                            "/refreshusers \t\t\t\tForce refresh user list\n" +
+                            "/ping \t\t\t\t\tPing the server and see latency\n" +
+                            "/w <user>\t\t\t\tWhisper a user\n" +
+                            "--------------------------------------\n";
+                    chatLog.appendANSI(helpText);
                 } else if (!input.equals("")) {
                     out.println(input);
                     userInput.setText("");
