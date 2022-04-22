@@ -81,7 +81,7 @@ public class ServerBroadcaster implements Runnable{
                                      whisperMessage += split[j];
                                      whisperMessage += " ";
                                  }
-                                 String whole = "\u001B[3m" + currentMessage.user.getUsername() + " whispers " + whisperMessage;
+                                 String whole = "\u001B[32m" + currentMessage.user.getUsername() + " whispers " + whisperMessage;
                                  for (User user: users){
                                      if (user.getUsername().equals(split[1])){
 
