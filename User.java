@@ -21,6 +21,7 @@ public class User {
     public User(String username, String password) throws NoSuchAlgorithmException {
         this.username = username;
         setPassword(password);
+        setUsername(username);
         banned = false;
         nameColor = Color.NONE;
         textColor = Color.NONE;
@@ -30,6 +31,9 @@ public class User {
 
     private void setPassword(String password) throws NoSuchAlgorithmException {
         hashedPassword = HashPass(password);
+    }
+    public void setUsername(String username) throws NoSuchAlgorithmException {
+        this.username = username;
     }
     //TODO: Implement Change PW function that verifies old password and sets new password if passed
     //DOC: Returns whether the password was changed
