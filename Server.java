@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.*;
 import java.time.Instant;
 import java.util.*;
@@ -9,6 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class Server {
+
 
     public static int isValidPort(String input) {
         int portNum;
@@ -29,6 +27,28 @@ public class Server {
         } catch (NumberFormatException e) {
             return -1;
         }
+    }
+
+    public static void logInfo(Socket c) throws Exception{
+        //open buffered reader for reading data from client
+        BufferedReader input;
+        PrintWriter output;
+        input = new BufferedReader(new InputStreamReader(c.getInputStream()));
+
+        String username = input.readLine();
+        System.out.println("SERVER SIDE" + username);
+        String password = input.readLine();
+        System.out.println("SERVER SIDE" + password);
+
+        //open printwriter for writing data to client
+        output = new PrintWriter(new OutputStreamWriter(c.getOutputStream()));
+
+      //  if(username.equals(c.getUsername()) &&password.equals(c.getPassword())){
+        //    output.println("Welcome, " + username);
+        //}else{
+          //  output.println("Login Failed");
+        //}
+
     }
 
     public static void main(String [] args) {
@@ -89,6 +109,12 @@ public class Server {
                                     connectionSocket.close();
                                 }
                             }
+                        }
+                        try {
+                            logInfo(connectionSocket);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         }
                         User user = new User(i + "", i + "");
                         user.setSocket(connectionSocket);
