@@ -72,10 +72,14 @@ public class Client {
 
 
             String serverMessage = in.readLine();
+            System.out.println(serverMessage);
 
             if (!serverMessage.equals("Connection refused.")) {
                 Thread t = new Thread(new ClientListener(clientSocket, GUI));
                 t.start();
+            }
+            else {
+                System.exit(1);
             }
         } catch (Exception e) {
             e.printStackTrace();

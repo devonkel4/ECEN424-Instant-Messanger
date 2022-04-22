@@ -86,7 +86,7 @@ public class ClientUserInterface {
         new Thread(() -> {
             try {
                 Thread.sleep(500);
-                out.println("/refreshusers");
+                //out.println("/refreshusers");
             } catch (Exception e) {
 
             }
