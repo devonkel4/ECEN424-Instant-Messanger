@@ -59,16 +59,16 @@ public class Client {
         Socket clientSocket;
 
         try {
-            PrintWriter output;
+//            PrintWriter output;
             clientSocket = new Socket(hostName, portNumber);
             ClientUserInterface GUI = new ClientUserInterface(clientSocket);
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            output = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-            String username = JOptionPane.showInputDialog(null, "Enter User Name:");
-            output.println(username);
-            String password = JOptionPane.showInputDialog(null, "Enter Password");
-            output.println(password);
-            output.flush();
+//            output = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+//            String username = JOptionPane.showInputDialog(null, "Enter User Name:");
+//            output.println(username);
+//            String password = JOptionPane.showInputDialog(null, "Enter Password");
+//            output.println(password);
+//            output.flush();
 
 
             String serverMessage = in.readLine();
