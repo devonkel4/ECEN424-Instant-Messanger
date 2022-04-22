@@ -68,8 +68,12 @@ public class ServerListener implements Runnable{
             }
             case "textcolor" -> {
                 if (split.length > 1) {
-                    Color color = Color.valueOf(split[1]);
-                    user.setTextColor(color);
+                    try {
+                        Color color = Color.valueOf(split[1]);
+                        user.setTextColor(color);
+                    } catch (Exception e) {
+                        System.out.println("ERROR: Invalid enum constant");
+                    }
                 }
             }
         }

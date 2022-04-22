@@ -1,3 +1,4 @@
+import javax.swing.table.DefaultTableModel;
 import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.io.File;
@@ -67,9 +68,15 @@ public class ServerBroadcaster implements Runnable{
                          switch(split[0]) {
                              case "/refreshusers" -> {
                                  // TODO: get users
+                                 DefaultTableModel newTableModel = new DefaultTableModel();
+                                 newTableModel.addColumn("Users");
                                  for (User user : users) {
+                                     String [] tempArray = {user.getUsername()};
+                                     newTableModel.addRow(tempArray);
                                      currentMessage.content += user.getUsername() + " ";
                                  }
+
+                                 GUI.activeUsers.setModel(newTableModel);
                                  sendMessage(currentMessage.content);
                              }
                              case "/w" ->{
