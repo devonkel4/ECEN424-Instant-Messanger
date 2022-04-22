@@ -1,3 +1,4 @@
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ public class User {
     private static ArrayList<User> userList;
     public static ArrayList<String> banList; //will either hold ips or unames
 
+    private Socket socket;
     private String hashedPassword;
     private String username;
     private boolean banned;
@@ -53,5 +55,7 @@ public class User {
     public String getUsername(){
         return username;
     }
-
+    public void setUsername(String username) { this.username = username; }
+    public Socket getSocket() { return socket; }
+    public void setSocket(Socket socket) { this.socket = socket; }
 }

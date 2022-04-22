@@ -29,9 +29,7 @@ public class ColorPane extends JTextPane {
         int len = getDocument().getLength(); // same value as getText().length();
         setCaretPosition(len);  // place caret at the end (with no selection)
         setCharacterAttributes(aset, false);
-        this.setEditable(true);
         replaceSelection(s); // there is no selection, so inserts at caret
-        this.setEditable(false);
     }
 
     public void appendANSI(String s) { // convert ANSI color codes first

@@ -21,9 +21,9 @@ public class ClientListener implements Runnable{
             int len = GUI.chatLog.getDocument().getLength(); // same value as getText().length();
             GUI.chatLog.setCaretPosition(len);  // place caret at the end (with no selection)
             GUI.chatLog.setCharacterAttributes(aset, false);
-            GUI.chatLog.setEditable(true);
+//            GUI.chatLog.setEditable(true);
             GUI.chatLog.replaceSelection(s + "\n"); // there is no selection, so inserts at caret
-            GUI.chatLog.setEditable(false);
+//            GUI.chatLog.setEditable(false);
     }
 
     public void run() {

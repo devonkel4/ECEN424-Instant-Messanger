@@ -31,7 +31,7 @@ public class Server {
         }
     }
 
-    public static void main(String [] args) throws IOException {
+    public static void main(String [] args) {
         int serverPort = isValidPort(args[0]);
         int maxClients = isNumeric(args[1]);
         BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingDeque<>();
@@ -50,8 +50,8 @@ public class Server {
         }
 
         ServerSocket serverSocket;
-        LinkedList<Socket> sockets = new LinkedList<>();
-        ServerUserInterface GUI = new ServerUserInterface(sockets);
+        LinkedList<User> users = new LinkedList<>();
+        ServerUserInterface GUI = new ServerUserInterface(users);
 
         try {
             serverSocket = new ServerSocket(serverPort);
@@ -66,7 +66,7 @@ public class Server {
 //        ServerListener.fileWriter = new FileWriter(fName);
 
         Thread [] t = new Thread[maxClients];
-        Thread t2 = new Thread(new ServerBroadcaster(messageQueue, GUI, sockets));
+        Thread t2 = new Thread(new ServerBroadcaster(messageQueue, GUI, users));
         t2.start();
         while (true) {
             try {
@@ -77,7 +77,11 @@ public class Server {
                 for (int i = 0; i < maxClients; i++) {
                     // if thread doesn't exist, or if thread exists and has finished running
                     if ( (t[i] == null) || (t[i] != null && !t[i].isAlive()) ) {
-                        t[i] = new Thread(new ServerListener(connectionSocket, messageToSend, messageQueue, i, GUI));
+
+                        // TODO: authenticate users
+                        User user = new User(i + "", i + "");
+                        user.setSocket(connectionSocket);
+                        t[i] = new Thread(new ServerListener(user, messageToSend, messageQueue, i, GUI));
                         t[i].start();
                         atMaxConnections = false;
                         break;

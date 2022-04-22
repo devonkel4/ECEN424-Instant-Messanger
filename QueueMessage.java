@@ -6,18 +6,17 @@ enum MessageType {
 
 public class QueueMessage {
     MessageType msgType;
-    Socket socket;
-    String id;
+    User user;
     String content;
 
-    public QueueMessage(MessageType msgType, Socket socket) {
+    public QueueMessage(MessageType msgType, User user) {
         this.msgType = msgType;
-        this.socket = socket;
+        this.user = user;
     }
 
-    public QueueMessage(MessageType msgType, Socket socket, String content) {
+    public QueueMessage(MessageType msgType, User user, String content) {
         this.msgType = msgType;
-        this.socket = socket;
+        this.user = user;
         this.content = content;
     }
 

@@ -59,7 +59,7 @@ public class ClientUserInterface {
         activePanel.add(activeUsersScroll);
 
         chatLog.appendANSI("\u001B[30m");
-        chatLog.setEditable(false);
+        //chatLog.setEditable(false);
         userInput.addKeyListener(keyListener);
 
         f.add(base);

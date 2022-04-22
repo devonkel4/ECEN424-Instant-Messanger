@@ -17,10 +17,10 @@ public class ServerUserInterface {
     public JTable activeUsers;
     private JScrollPane chatLogScroll;
     private JScrollPane activeUsersScroll;
-    private LinkedList<Socket> sockets;
+    private LinkedList<User> users;
     PrintWriter out;
 
-    public ServerUserInterface(LinkedList<Socket> sockets) {
+    public ServerUserInterface(LinkedList<User> users) {
 
         f = new JFrame("Server");
         base = new JPanel(new BorderLayout());
@@ -39,7 +39,7 @@ public class ServerUserInterface {
         userInput.setFont(resizedFont);
         chatLog.setFont(resizedFont);
 
-        this.sockets = sockets;
+        this.users = users;
 
         base.add(upperPanel);
         base.add(lowerPanel,BorderLayout.SOUTH);
@@ -52,7 +52,7 @@ public class ServerUserInterface {
         activePanel.add(activeUsersScroll);
 
         chatLog.appendANSI("\u001B[30m");
-        chatLog.setEditable(false);
+//        chatLog.setEditable(false);
         userInput.addKeyListener(keyListener);
 
         f.add(base);
@@ -75,9 +75,9 @@ public class ServerUserInterface {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 String input = userInput.getText();
                 if (!input.equals("")) {
-                    for (Socket socket : sockets) {
+                    for (User user : users) {
                         try {
-                            out = new PrintWriter(socket.getOutputStream(), true);
+                            out = new PrintWriter(user.getSocket().getOutputStream(), true);
                         } catch (Exception err) {
                             err.printStackTrace();
                             System.err.println(err.getClass().getName()+": "+err.getMessage());
